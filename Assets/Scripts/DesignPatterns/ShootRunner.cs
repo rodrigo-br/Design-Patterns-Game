@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class ShootRunner : MonoBehaviour
@@ -20,14 +21,20 @@ public class ShootRunner : MonoBehaviour
                 new ShootDelayed(new ConeShoot(bulletSpawner), this as MonoBehaviour),
                 new StraightShoot(bulletSpawner),
             })
-    };
+        };
         shootPattern = ShootStrategies[0];
     }
 
     private void OnEnable()
     {
-        GameManager.instance.InputObserver.OnTestShoot += Shoot;
-        GameManager.instance.InputObserver.OnTestSelection += (index) => SetShootPattern(index);
+        StartCoroutine(AssignInputs());
+    }
+
+    private IEnumerator AssignInputs()
+    {
+        yield return new WaitUntil(() => GameManager.Instance != null);
+        GameManager.Instance.InputObserver.OnTestShoot += Shoot;
+        GameManager.Instance.InputObserver.OnTestSelection += (index) => SetShootPattern(index);
     }
 
     private void SetShootPattern(int index)
@@ -37,8 +44,8 @@ public class ShootRunner : MonoBehaviour
 
     private void OnDisable()
     {
-        GameManager.instance.InputObserver.OnTestShoot -= Shoot;
-        GameManager.instance.InputObserver.OnTestSelection -= SetShootPattern;
+        GameManager.Instance.InputObserver.OnTestShoot -= Shoot;
+        GameManager.Instance.InputObserver.OnTestSelection -= SetShootPattern;
     }
 
     public void Shoot()

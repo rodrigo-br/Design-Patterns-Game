@@ -44,6 +44,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Value"",
+                    ""id"": ""621e5789-bb75-4a9c-8794-4f2777eb891a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -101,6 +110,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""TestShoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""01ce08c4-825e-40a2-959b-feadf905bc8f"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -111,6 +131,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_TestSelection = m_Gameplay.FindAction("TestSelection", throwIfNotFound: true);
         m_Gameplay_TestShoot = m_Gameplay.FindAction("TestShoot", throwIfNotFound: true);
+        m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -174,12 +195,14 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_Gameplay_TestSelection;
     private readonly InputAction m_Gameplay_TestShoot;
+    private readonly InputAction m_Gameplay_Jump;
     public struct GameplayActions
     {
         private @InputActions m_Wrapper;
         public GameplayActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @TestSelection => m_Wrapper.m_Gameplay_TestSelection;
         public InputAction @TestShoot => m_Wrapper.m_Gameplay_TestShoot;
+        public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -195,6 +218,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @TestShoot.started += instance.OnTestShoot;
             @TestShoot.performed += instance.OnTestShoot;
             @TestShoot.canceled += instance.OnTestShoot;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -205,6 +231,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @TestShoot.started -= instance.OnTestShoot;
             @TestShoot.performed -= instance.OnTestShoot;
             @TestShoot.canceled -= instance.OnTestShoot;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -226,5 +255,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     {
         void OnTestSelection(InputAction.CallbackContext context);
         void OnTestShoot(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }

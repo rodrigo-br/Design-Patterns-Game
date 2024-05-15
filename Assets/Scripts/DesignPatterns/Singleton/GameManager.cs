@@ -2,18 +2,18 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance = null;
+    public static GameManager Instance = null;
     public InputObserver InputObserver { get; private set; }
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
             InputObserver = new InputObserver();
+            Instance = this;
             DontDestroyOnLoad(this.gameObject);
         }
-        else if (instance != this)
+        else if (Instance != this)
         {
             Destroy(gameObject);
         }
