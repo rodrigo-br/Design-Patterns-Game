@@ -1,21 +1,57 @@
 using System;
+using UnityEngine.InputSystem;
 
-public class InputObserver
+public class InputObserver : InputActions.IGameplayActions
 {
-    private InputActions inputActions;
+    private readonly InputActions inputActions;
     public event Action<int> OnTestSelection;
-    public event Action OnTestShoot;
+    public event Action OnShoot;
     public event Action<bool> OnJump;
-    public event Action OnJumpStarted;
+    public event Action<bool> OnJumpStarted;
+    public event Action<float> OnMove;
 
     public InputObserver()
     {
         inputActions = new InputActions();
+        inputActions.Gameplay.SetCallbacks(this);
         inputActions.Enable();
-        inputActions.Gameplay.TestSelection.performed += (ctx) => OnTestSelection?.Invoke((int)ctx.ReadValue<float>());
-        inputActions.Gameplay.TestShoot.performed += (_) => OnTestShoot?.Invoke();
-        inputActions.Gameplay.Jump.started += (_) => OnJumpStarted?.Invoke();
-        inputActions.Gameplay.Jump.canceled += (_) => OnJump?.Invoke(false);
-        inputActions.Gameplay.Jump.performed += (_) => OnJump?.Invoke(true);
+    }
+
+    void InputActions.IGameplayActions.OnTestSelection(InputAction.CallbackContext context)
+    {
+        OnTestSelection?.Invoke((int)context.ReadValue<float>());
+    }
+
+    void InputActions.IGameplayActions.OnShoot(InputAction.CallbackContext context)
+    {
+        OnShoot?.Invoke();
+    }
+
+    void InputActions.IGameplayActions.OnJump(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            OnJumpStarted?.Invoke(true);
+        }
+        else if (context.performed)
+        {
+            OnJump?.Invoke(true);
+        }
+        else if (context.canceled)
+        {
+            OnJump?.Invoke(false);
+        }
+    }
+
+    void InputActions.IGameplayActions.OnMove(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            OnMove?.Invoke(context.ReadValue<float>());
+        }
+        else if (context.canceled)
+        {
+            OnMove?.Invoke(0);
+        }
     }
 }

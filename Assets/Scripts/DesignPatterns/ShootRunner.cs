@@ -33,7 +33,7 @@ public class ShootRunner : MonoBehaviour
     private IEnumerator AssignInputs()
     {
         yield return new WaitUntil(() => GameManager.Instance != null);
-        GameManager.Instance.InputObserver.OnTestShoot += Shoot;
+        GameManager.Instance.InputObserver.OnShoot += Shoot;
         GameManager.Instance.InputObserver.OnTestSelection += (index) => SetShootPattern(index);
     }
 
@@ -44,7 +44,7 @@ public class ShootRunner : MonoBehaviour
 
     private void OnDisable()
     {
-        GameManager.Instance.InputObserver.OnTestShoot -= Shoot;
+        GameManager.Instance.InputObserver.OnShoot -= Shoot;
         GameManager.Instance.InputObserver.OnTestSelection -= SetShootPattern;
     }
 

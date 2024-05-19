@@ -37,7 +37,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""TestShoot"",
+                    ""name"": ""Shoot"",
                     ""type"": ""Button"",
                     ""id"": ""679b734f-2615-4cd1-80a2-07a1fae1c031"",
                     ""expectedControlType"": ""Button"",
@@ -53,6 +53,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Button"",
+                    ""id"": ""07394e8a-035d-43ca-b0c2-d7eb53807f59"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -62,7 +71,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": ""Scale(factor=0)"",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""TestSelection"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -73,7 +82,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/2"",
                     ""interactions"": """",
                     ""processors"": ""Scale"",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""TestSelection"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -84,7 +93,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/3"",
                     ""interactions"": """",
                     ""processors"": ""Scale(factor=2)"",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""TestSelection"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -95,7 +104,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/4"",
                     ""interactions"": """",
                     ""processors"": ""Scale(factor=3)"",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""TestSelection"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -106,8 +115,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""TestShoot"",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -117,21 +126,78 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""01826a11-1912-4865-82ab-0e1112fa1e0a"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""4bde7260-8e41-4be4-8e98-0b2660263c7b"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""b61aea93-101b-4a98-b828-fb1ddbd5a0fb"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""Keyboard"",
+            ""bindingGroup"": ""Keyboard"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Gamepad"",
+            ""bindingGroup"": ""Gamepad"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Gamepad>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        }
+    ]
 }");
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_TestSelection = m_Gameplay.FindAction("TestSelection", throwIfNotFound: true);
-        m_Gameplay_TestShoot = m_Gameplay.FindAction("TestShoot", throwIfNotFound: true);
+        m_Gameplay_Shoot = m_Gameplay.FindAction("Shoot", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
+        m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -194,15 +260,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Gameplay;
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_Gameplay_TestSelection;
-    private readonly InputAction m_Gameplay_TestShoot;
+    private readonly InputAction m_Gameplay_Shoot;
     private readonly InputAction m_Gameplay_Jump;
+    private readonly InputAction m_Gameplay_Move;
     public struct GameplayActions
     {
         private @InputActions m_Wrapper;
         public GameplayActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @TestSelection => m_Wrapper.m_Gameplay_TestSelection;
-        public InputAction @TestShoot => m_Wrapper.m_Gameplay_TestShoot;
+        public InputAction @Shoot => m_Wrapper.m_Gameplay_Shoot;
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
+        public InputAction @Move => m_Wrapper.m_Gameplay_Move;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -215,12 +283,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @TestSelection.started += instance.OnTestSelection;
             @TestSelection.performed += instance.OnTestSelection;
             @TestSelection.canceled += instance.OnTestSelection;
-            @TestShoot.started += instance.OnTestShoot;
-            @TestShoot.performed += instance.OnTestShoot;
-            @TestShoot.canceled += instance.OnTestShoot;
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -228,12 +299,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @TestSelection.started -= instance.OnTestSelection;
             @TestSelection.performed -= instance.OnTestSelection;
             @TestSelection.canceled -= instance.OnTestSelection;
-            @TestShoot.started -= instance.OnTestShoot;
-            @TestShoot.performed -= instance.OnTestShoot;
-            @TestShoot.canceled -= instance.OnTestShoot;
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -251,10 +325,29 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
     }
     public GameplayActions @Gameplay => new GameplayActions(this);
+    private int m_KeyboardSchemeIndex = -1;
+    public InputControlScheme KeyboardScheme
+    {
+        get
+        {
+            if (m_KeyboardSchemeIndex == -1) m_KeyboardSchemeIndex = asset.FindControlSchemeIndex("Keyboard");
+            return asset.controlSchemes[m_KeyboardSchemeIndex];
+        }
+    }
+    private int m_GamepadSchemeIndex = -1;
+    public InputControlScheme GamepadScheme
+    {
+        get
+        {
+            if (m_GamepadSchemeIndex == -1) m_GamepadSchemeIndex = asset.FindControlSchemeIndex("Gamepad");
+            return asset.controlSchemes[m_GamepadSchemeIndex];
+        }
+    }
     public interface IGameplayActions
     {
         void OnTestSelection(InputAction.CallbackContext context);
-        void OnTestShoot(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnMove(InputAction.CallbackContext context);
     }
 }
