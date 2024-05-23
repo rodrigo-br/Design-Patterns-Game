@@ -18,7 +18,7 @@ public class Bullet : MonoBehaviour, IPoolable
     {
         if (!this.enabled) return;
 
-        myRigidbody2D.velocity = transform.right * bulletSpeed * Time.deltaTime;
+        myRigidbody2D.velocity = Vector2.right * bulletSpeed * Time.deltaTime;
 
         currentBulletDuration += Time.deltaTime;
         if (currentBulletDuration >= maxBulletDuration)
