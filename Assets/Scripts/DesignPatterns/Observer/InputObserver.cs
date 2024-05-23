@@ -19,12 +19,18 @@ public class InputObserver : InputActions.IGameplayActions
 
     void InputActions.IGameplayActions.OnTestSelection(InputAction.CallbackContext context)
     {
-        OnTestSelection?.Invoke((int)context.ReadValue<float>());
+        if (context.started)
+        {
+            OnTestSelection?.Invoke((int)context.ReadValue<float>());
+        }
     }
 
     void InputActions.IGameplayActions.OnShoot(InputAction.CallbackContext context)
     {
-        OnShoot?.Invoke();
+        if (context.performed)
+        {
+            OnShoot?.Invoke();
+        }
     }
 
     void InputActions.IGameplayActions.OnJump(InputAction.CallbackContext context)

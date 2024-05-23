@@ -5,6 +5,7 @@ public class PlayerStateMachine : StateMachine
 {
     #region auto-properties
     [field: SerializeField] public Rigidbody2D FeetRigidBody2D { get; private set; }
+    [field: SerializeField] public Animator Animator { get; private set; }
     [field: SerializeField] public float MaxJumpVelocity { get; private set;  } = 5;
     [field: SerializeField] public float FallMultiplier { get; private set;  } = 2.5f;
     [field: SerializeField] public float LowJumpMultiplier { get; private set;  } = 2f;
@@ -20,7 +21,7 @@ public class PlayerStateMachine : StateMachine
     private void Start()
     {
         Gravity = Physics2D.gravity;
-        SwitchState(new PlayerWalkState(this));
+        SwitchState(new PlayerIdleState(this));
     }
 
     private void OnEnable()

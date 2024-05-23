@@ -12,8 +12,8 @@ public class ShootRunner : MonoBehaviour
         bulletSpawner = GetComponent<BulletSpawner>();
         ShootStrategies = new IShootStrategy[]
         {
-            new StraightShoot(bulletSpawner),
             new ConeShoot(bulletSpawner),
+            new StraightShoot(bulletSpawner),
             new ShootDelayed(new ConeShoot(bulletSpawner), this as MonoBehaviour),
             new ShootComposite(new IShootStrategy[]
             {
@@ -39,6 +39,7 @@ public class ShootRunner : MonoBehaviour
 
     private void SetShootPattern(int index)
     {
+        Debug.Log(index);
         shootPattern = ShootStrategies[index];
     }
 

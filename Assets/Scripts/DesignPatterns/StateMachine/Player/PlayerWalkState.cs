@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerWalkState : PlayerBaseState
@@ -17,6 +18,11 @@ public class PlayerWalkState : PlayerBaseState
     public override void Tick(float deltaTime)
     {
         Move(deltaTime);
+        if (Mathf.Abs(feetRigidBody.velocity.x) <= 0.2f && stateMachine.MoveDirection == 0)
+        {
+            stateMachine.SwitchState(new PlayerIdleState(stateMachine));
+        }
+        stateMachine.Animator.SetFloat("TwoLegs", 1, 0.1f, deltaTime);
     }
 
     public override void Exit()
