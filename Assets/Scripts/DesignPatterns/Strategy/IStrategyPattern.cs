@@ -5,9 +5,10 @@ public interface IStrategyPattern
 
 public interface IShootStrategy : IStrategyPattern
 {
-    BulletSpawner BulletSpawner { get;}
+    BulletSpawner BulletSpawner { get; }
 }
 
 public interface IAbilityStrategy : IStrategyPattern
 {
+    PlayerStateMachine PlayerStateMachine { get; }
 }

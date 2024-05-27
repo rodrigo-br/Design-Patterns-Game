@@ -15,11 +15,15 @@ public class PlayerStateMachine : StateMachine
     public bool IsJumpingPressed { get; private set; } = false;
     public float MoveDirection { get; private set; } = 0;
     public Vector2 Gravity { get; private set; }
+    public float defaultMaxJumpVelocity { get; private set; }
+    public float defaultMaxMovementSpeed { get; private set; }
     #endregion
 
     #region Unity Methods
     private void Start()
     {
+        defaultMaxJumpVelocity = MaxJumpVelocity;
+        defaultMaxMovementSpeed = MaxMovementSpeed;
         Gravity = Physics2D.gravity;
         SwitchState(new PlayerIdleState(this));
     }
@@ -51,5 +55,15 @@ public class PlayerStateMachine : StateMachine
     private void SetIsJumpingPressed(bool input)
     {
         IsJumpingPressed = input;
+    }
+
+    public void SetMaxJumpVelocity(float maxJumpVelocity)
+    {
+        MaxJumpVelocity = maxJumpVelocity;
+    }
+
+    public void SetMaxMovementSpeed(float maxMovementSpeed)
+    {
+        MaxMovementSpeed = maxMovementSpeed;
     }
 }

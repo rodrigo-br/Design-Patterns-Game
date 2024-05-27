@@ -3,23 +3,24 @@ using UnityEngine;
 
 public class ShootRunner : MonoBehaviour
 {
-    private BulletSpawner bulletSpawner;
+    [SerializeField] private BulletSpawner bulletSpawner;
+    [SerializeField] private BulletSpawner tennisBulletSpawner;
     private IShootStrategy shootPattern;
     private IShootStrategy[] ShootStrategies;
 
     private void Awake()
     {
-        bulletSpawner = GetComponent<BulletSpawner>();
         ShootStrategies = new IShootStrategy[]
         {
             new ConeShoot(bulletSpawner),
-            new StraightShoot(bulletSpawner),
+            new StraightShoot(tennisBulletSpawner),
             new ShootDelayed(new ConeShoot(bulletSpawner), this as MonoBehaviour),
             new ShootComposite(new IShootStrategy[]
             {
                 new ConeShoot(bulletSpawner),
+                new ShootDelayed(new StraightShoot(tennisBulletSpawner), this as MonoBehaviour, 0.5f),
                 new ShootDelayed(new ConeShoot(bulletSpawner), this as MonoBehaviour),
-                new StraightShoot(bulletSpawner),
+                new ShootDelayed(new StraightShoot(tennisBulletSpawner), this as MonoBehaviour, 1.5f)
             })
         };
         shootPattern = ShootStrategies[0];
@@ -39,7 +40,6 @@ public class ShootRunner : MonoBehaviour
 
     private void SetShootPattern(int index)
     {
-        Debug.Log(index);
         shootPattern = ShootStrategies[index];
     }
 

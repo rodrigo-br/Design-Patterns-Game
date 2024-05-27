@@ -2,14 +2,21 @@ using UnityEngine;
 
 public class BulletSpawner : MonoBehaviour
 {
+    private enum PrefabPath
+    {
+        Bullet_TennisBall,
+        Bullet_Bone,
+        Bullet
+    }
+    [SerializeField] private PrefabPath prefabPath;
     [SerializeField] private float bulletSpeed = 500;
     [SerializeField] private float maxBulletDuration = 5;
+    [SerializeField] private int initialPoolSize = 20;
     private ObjectPooling<Bullet> bulletPool;
-    private const int INITIAL_POOL_SIZE = 20;
 
     private void Awake()
     {
-        bulletPool = new ObjectPooling<Bullet>(Constants.BULLET_PREFAB, INITIAL_POOL_SIZE);
+        bulletPool = new ObjectPooling<Bullet>("Prefabs/" + prefabPath.ToString(), initialPoolSize);
     }
 
     public void Shoot()
@@ -20,7 +27,11 @@ public class BulletSpawner : MonoBehaviour
     private void BulletRent()
     {
         Bullet bullet = bulletPool.Rent();
-        bullet.transform.SetPositionAndRotation(transform.position, transform.rotation);
-        bullet.StartBullet(bulletSpeed, maxBulletDuration, this.transform.position);
+        bullet.StartBullet(bulletSpeed, maxBulletDuration, transform.position, transform.rotation);
+    }
+
+    public void SetObjectPooling(ObjectPooling<Bullet> objectPooling)
+    {
+        bulletPool = objectPooling;
     }
 }

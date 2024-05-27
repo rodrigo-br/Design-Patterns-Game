@@ -3,15 +3,16 @@ using UnityEngine;
 
 public class ShootDelayed : IShootStrategy
 {
-    float delay = 1f;
-    private IShootStrategy wrappedStrategy;
-    private MonoBehaviour monoBehaviour;
+    private readonly float delay;
+    private readonly IShootStrategy wrappedStrategy;
+    private readonly MonoBehaviour monoBehaviour;
     public BulletSpawner BulletSpawner => throw new System.NotImplementedException();
 
-    public ShootDelayed(IShootStrategy wrappedStrategy, MonoBehaviour monoBehaviour)
+    public ShootDelayed(IShootStrategy wrappedStrategy, MonoBehaviour monoBehaviour, float delay = 1f)
     {
         this.wrappedStrategy = wrappedStrategy;
         this.monoBehaviour = monoBehaviour;
+        this.delay = delay;
     }
 
 
